@@ -15,6 +15,7 @@ function addItem(e){
   li.className = 'list-group-item';
   li.appendChild(document.createTextNode("Item: "+newItem));
   let tagP = document.createElement('p')
+  tagP.id = 'description'
   tagP.appendChild(document.createTextNode("description: "+newdes))
   li.appendChild(tagP)
   let deleteBtn = document.createElement('button');
@@ -40,23 +41,13 @@ function removeItem(e){
 function filterItems(e){
   let text = e.target.value.toLowerCase();
   let items = itemList.getElementsByTagName('li');
-//   let des = itemList.getElementsByTagName('p')
   Array.from(items).forEach((item) => {
     let itemName = item.firstChild.textContent;
-    // console.log(item)
-    // let des = item[1].children.textContent
-    if(itemName.toLowerCase().indexOf(text) != -1 ){
+    let des = item.childNodes[1].textContent
+    if(itemName.toLowerCase().indexOf(text) != -1 || des.toLocaleLowerCase().indexOf(text) != -1){
       item.style.display = 'block';
     } else {
       item.style.display = 'none';
     }
   });
-//   Array.from(des).forEach((d) => {
-//     let itemNa = d.firstChild.textContent;
-//     if(itemName.toLowerCase().indexOf(text) != -1){
-//       item.style.display = 'block';
-//     } else {
-//       item.style.display = 'none';
-//     }
-//   })
 }
