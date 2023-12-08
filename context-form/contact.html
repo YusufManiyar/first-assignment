@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="contact.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Contact Us</title>
+</head>
+<body>
+    <div><img src="./assets/customer-service.svg" alt="company name" width="60px"></div>
+    <div class = "contact-form">
+        <form  action="#" id="my-form">
+            <label>User Name</label>
+            <input type="text" id="name" name="firstname" placeholder="UserName" required>
+            <!-- <br>
+            <label>Last Name</label>
+            <input type="text" name="lastname" placeholder="LastName" required> -->
+            <br>
+            <label>Phone No.</label>
+            <input type="tel" id="phone" maxlength="10" name="phone" placeholder="Phone no." required>
+            <br>
+            <label>Email ID</label>
+            <input type="email" id="email" name="email" placeholder="Email id">
+            <br>
+            <label>Message</label>
+            <textarea rows="4" class="msg" cols="50" name="message" placeholder=" Write a Message"></textarea>
+            <br> 
+            <button class="pushable">
+                <span class="front">
+                    Submit
+                </span>
+            </button>
+        </form>
+        <ul id="users" class="border mt-2"></ul>
+    </div>
+    <div>
+        <button>login</button>
+        <button>signin</button>
+    </div>
+</body>
+<script src="./contact.js"></script>
+</html>
