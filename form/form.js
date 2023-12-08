@@ -3,6 +3,7 @@ const nameInput = document.querySelector('#name');
 const emailInput = document.querySelector('#email');
 const msg = document.querySelector('.msg');
 const userList = document.querySelector('#users')
+let count = 0
 
 myForm.addEventListener('submit', print);
 
@@ -12,14 +13,23 @@ myForm.addEventListener('submit', print);
 
 function print(e){
     e.preventDefault();
-    localStorage.setItem(nameInput.value,nameInput.value)
-    localStorage.setItem(emailInput.value,emailInput.value)
+    
+    console.log(localStorage)
     if(nameInput.value === '' || emailInput.value === '') {
       msg.innerHTML = 'Please enter all fields';
       setTimeout(() => msg.remove(), 3000);
     } else {
+      count += 1 
+    let user = 'user'+count 
+    let userObj = {
+      name: `${nameInput.value}`,
+      email: `${emailInput.value}`
+    }
+    localStorage.setItem(user,JSON.stringify(userObj))
     let li = document.createElement('li')
-    li.appendChild(document.createTextNode(`${nameInput.value} : ${emailInput.value}`))
+    let data = JSON.parse(localStorage.getItem(user))
+    console.log(data)
+    li.appendChild(document.createTextNode(`${data.name} : ${data.email}`))
     
     userList.appendChild(li)
 
