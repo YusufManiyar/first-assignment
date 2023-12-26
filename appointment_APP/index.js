@@ -42,21 +42,6 @@ function print(e){
         alert(err)
     })
 
-    // function showData(data){
-    //     let li = document.createElement('li')
-    // let editedBtn = document.createElement('button')
-    // editedBtn.appendChild(document.createTextNode('Edited'))
-    // let deleteBtn = document.createElement('button')
-    // deleteBtn.appendChild(document.createTextNode('Delete'))
-    // deleteBtn.className = 'btn btn-danger btn-sm m-2 float-right delete'
-    // editedBtn.className = 'btn btn-info btn-sm m-2 float-right edited'
-    // console.log(data)
-    // li.appendChild(document.createTextNode(`${data.name} : ${data.email} : ${data.phone}`))
-    // li.appendChild(editedBtn)
-    // li.appendChild(deleteBtn)
-    // userList.appendChild(li)
-
-    // }
     nameInput.value = ''
     emailInput.value = ''
     phoneInput.value = ''
