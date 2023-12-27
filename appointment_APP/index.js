@@ -95,7 +95,7 @@ function createModal(form) {
     var modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'modal-' + form.getAttribute('uniqueId');
-    console.log(form.getAttribute('uniqueId'))
+
     // Create modal dialog
     var modalDialog = document.createElement('div');
     modalDialog.className = 'modal-dialog';
@@ -134,27 +134,9 @@ function createModal(form) {
     // Append the form to the modal body
     modalBody.appendChild(form);
 
-    // Create modal footer
-    var modalFooter = document.createElement('div');
-    modalFooter.className = 'modal-footer';
-
-    // Create close button for the footer
-    var closeFooterButton = document.createElement('button');
-    closeFooterButton.type = 'button';
-    closeFooterButton.className = 'btn btn-secondary';
-    closeFooterButton.setAttribute('data-dismiss', 'modal');
-    closeFooterButton.textContent = 'Close';
-    closeFooterButton.onclick = (e) => {
-        e.preventDefault()
-        $(`#${modal.id}`).modal('hide')
-    }
-    // Append close button to the footer
-    modalFooter.appendChild(closeFooterButton);
-
     // Append header, body, and footer to the modal content
     modalContent.appendChild(modalHeader);
     modalContent.appendChild(modalBody);
-    modalContent.appendChild(modalFooter);
 
     // Append modal content to the modal dialog
     modalDialog.appendChild(modalContent);
@@ -186,7 +168,7 @@ function createForm(data) {
         });
 
         axios.put(`https://crudcrud.com/api/b18fe9d149784a9ab4666532766df579/appointmentdata/${data._id}`, formObject)
-        .then((res) => {
+        .then(() => {
             location.reload(true)
         }).catch((err) => {
             alert(err)
