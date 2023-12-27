@@ -5,13 +5,11 @@ const phoneInput = document.querySelector('#phone');
 const userList = document.querySelector('#user')
 
 window.addEventListener("DOMContentLoaded",() => {
-    axios.get("https://crudcrud.com/api/b475b9f78bf24d169408566af80c6df0/appointmentdata")
+    axios.get("https://crudcrud.com/api/b18fe9d149784a9ab4666532766df579/appointmentdata")
     .then((res) => {
-        alert("successfuly")
         for(let i = 0; i < res.data.length; i++){
             showData(res.data[i])
         }
-        console.log(res.data)
     }).catch((err) => {
         alert(err)
     })
@@ -23,7 +21,7 @@ userList.addEventListener('click', editItem)
 
 function print(e){
     e.preventDefault();
-    
+
     if(nameInput.value === '' || emailInput.value === '' || phoneInput.value === '') {
       alert('Please enter all fields');
     } else {
@@ -33,18 +31,14 @@ function print(e){
       phone: `${phoneInput.value}`
     }
     
-    axios.post("https://crudcrud.com/api/b475b9f78bf24d169408566af80c6df0/appointmentdata", userObj)
+    axios.post("https://crudcrud.com/api/b18fe9d149784a9ab4666532766df579/appointmentdata", userObj)
     .then((res) => {
         alert("successfuly")
         showData(res.data)
-        console.log(res.data)
     }).catch((err) => {
         alert(err)
     })
-
-    nameInput.value = ''
-    emailInput.value = ''
-    phoneInput.value = ''
+        myForm.reset()
     }
   }
 
@@ -52,11 +46,11 @@ function showData(data){
 let li = document.createElement('li')
 li.className = 'm-3'
 let editedBtn = document.createElement('button')
-editedBtn.appendChild(document.createTextNode('Edited'))
+editedBtn.appendChild(document.createTextNode('Edit'))
 let deleteBtn = document.createElement('button')
 deleteBtn.appendChild(document.createTextNode('Delete'))
 deleteBtn.className = 'btn btn-danger btn-sm m-1  float-right delete'
-editedBtn.className = 'btn btn-info btn-sm m-1 float-right edited'
+editedBtn.className = 'btn btn-info btn-sm m-1 float-right edit'
 console.log(data)
 li.appendChild(document.createTextNode(`${data.name} : ${data.email} : ${data.phone}`))
 li.id = data._id
@@ -66,13 +60,13 @@ userList.appendChild(li)
 
 }
 
-async function removeItem(e){
+function removeItem(e){
     if(e.target.classList.contains('delete')){
         if(confirm('Are You Sure?')){
         let li = e.target.parentElement;
         let id =  li.id
         
-       await axios.delete(`https://crudcrud.com/api/b475b9f78bf24d169408566af80c6df0/appointmentdata/${id}`)
+       axios.delete(`https://crudcrud.com/api/b18fe9d149784a9ab4666532766df579/appointmentdata/${id}`)
         .then((res) => alert('Successfully deleted appointment'))
         .catch((err) => alert(err));
         
@@ -83,11 +77,16 @@ async function removeItem(e){
 }
 
 function editItem(e){
-    if(e.target.classList.contains('edited')){
+    if(e.target.classList.contains('edit')){
         let li = e.target.parentElement;
-        console.log(e.target.parentElement.id)
-        let data = JSON.parse(localStorage.getItem(li.id))
-        $(`#modal-${li.id}`).modal('show');
+        axios.get(`https://crudcrud.com/api/b18fe9d149784a9ab4666532766df579/appointmentdata/${li.id}`)
+        .then((res) => {
+            li.appendChild(createModal(createForm(res.data)))
+            $(`#modal-${li.id}`).modal('show');
+            console.log(`#modal-${li.id}`)
+        }).catch((err) => {
+            alert(err)
+        })
     }
 }
 
@@ -96,6 +95,7 @@ function createModal(form) {
     var modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'modal-' + form.getAttribute('uniqueId');
+    console.log(form.getAttribute('uniqueId'))
     // Create modal dialog
     var modalDialog = document.createElement('div');
     modalDialog.className = 'modal-dialog';
@@ -111,7 +111,7 @@ function createModal(form) {
     // Create modal title
     var modalTitle = document.createElement('h4');
     modalTitle.className = 'modal-title';
-    modalTitle.textContent = 'Expense Tracker Form';
+    modalTitle.textContent = 'Update Appointment';
 
     // Create close button
     var closeButton = document.createElement('button');
@@ -163,4 +163,70 @@ function createModal(form) {
     modal.appendChild(modalDialog);
 
     return modal
+}
+
+function createForm(data) {
+    // Create form element
+    var form = document.createElement('form');
+    form.id = 'form-' + data._id ;
+    form.setAttribute('uniqueId', data._id);
+
+
+    // Create and append input elements
+    createInput('Your Name:', 'name', 'text', 'Enter Name', form, true, data.name);
+    createInput('Email Id:', 'email', 'email', 'Enter Email', form, true, data.email);
+    createInput('Phone No:', 'phone', 'tel', 'Enter Phone No.', form, true, data.phone);
+
+    form.onsubmit = function (e) {
+        e.preventDefault()
+        let formData = new FormData(e.target);
+        let formObject = {};
+        formData.forEach(function (value, key) {
+            formObject[key] = value;
+        });
+
+        axios.put(`https://crudcrud.com/api/b18fe9d149784a9ab4666532766df579/appointmentdata/${data._id}`, formObject)
+        .then((res) => {
+            location.reload(true)
+        }).catch((err) => {
+            alert(err)
+        })
+
+    };
+
+    // Create submit button
+    var submitBtn = document.createElement('input');
+    submitBtn.type = 'submit';
+    submitBtn.id = 'save';
+    submitBtn.value = 'Save';
+    form.appendChild(submitBtn);
+
+    return form
+}
+
+function createInput(labelText, inputId, inputType, placeholderText, form, required, value) {
+    // Create label
+    var label = document.createElement('label');
+    label.textContent = labelText;
+    label.htmlFor = inputId;
+    form.appendChild(label);
+
+    // Create input
+    var input = document.createElement('input');
+    input.type = inputType;
+    input.id = inputId;
+    input.name = inputId;
+    input.placeholder = placeholderText;
+    if (required) {
+        input.required = true;
+    }
+
+    if (value) {
+        input.value = value;
+    }
+
+    form.appendChild(input);
+
+    // Add line break for spacing
+    form.appendChild(document.createElement('br'));
 }
